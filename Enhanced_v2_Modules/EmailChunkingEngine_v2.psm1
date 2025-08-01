@@ -50,7 +50,7 @@ function New-EmailChunks {
             SenderName = $EmailData.Sender.Name
             HasQuoteChain = $content -match '^>.*?$'
             HasSignature = $content -match '(?i)(?:best regards|sincerely|thanks)'
-            ContentType = if ($EmailData.HTMLBody) { "HTML" } else { "PlainText" }
+            ContentType = $(if ($EmailData.HTMLBody) { "HTML" } else { "PlainText" })
             OriginalLength = $content.Length
         }
         
@@ -636,7 +636,7 @@ function Test-SearchReadiness {
     return @{
         IsReady = $issues.Count -eq 0
         Issues = $issues
-        ReadinessScore = if ($issues.Count -eq 0) { 100 } else { [math]::Max(0, 100 - ($issues.Count * 25)) }
+        ReadinessScore = $(if ($issues.Count -eq 0) { 100 } else { [math]::Max(0, 100 - ($issues.Count * 25)) })
     }
 }
 

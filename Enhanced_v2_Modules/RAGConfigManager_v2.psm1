@@ -318,7 +318,7 @@ function Update-RAGConfiguration {
                 ChangesApplied = $Updates.Keys.Count
                 NewVersion = $updatedConfig.Metadata.Version
                 UpdateDescription = $UpdateDescription
-                ValidationPassed = if ($ValidateAfterUpdate) { $validationResult.IsValid } else { $null }
+                ValidationPassed = $(if ($ValidateAfterUpdate) { $validationResult.IsValid } else { $null })
             }
             OriginalConfiguration = $originalConfig
         }
@@ -512,7 +512,7 @@ function Test-RAGConfiguration {
         
         # Calculate overall status
         $testResults.OverallStatus = if ($testResults.TestsFailed -eq 0) {
-            if ($testResults.TestsPassed -eq $testResults.TestsRun) { "Passed" } else { "Warning" }
+            $(if ($testResults.TestsPassed -eq $testResults.TestsRun) { "Passed" } else { "Warning" })
         } else {
             "Failed"
         }
@@ -853,7 +853,7 @@ function Get-NextVersion {
     try {
         $versionParts = $CurrentVersion.Split('.')
         $major = [int]$versionParts[0]
-        $minor = if ($versionParts.Length -gt 1) { [int]$versionParts[1] } else { 0 }
+        $minor = $(if ($versionParts.Length -gt 1) { [int]$versionParts[1] } else { 0 })
         
         $newMinor = $minor + 1
         return "$major.$newMinor"

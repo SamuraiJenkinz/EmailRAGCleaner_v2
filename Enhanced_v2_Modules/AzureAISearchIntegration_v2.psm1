@@ -288,9 +288,9 @@ function Search-EmailDocuments {
         
         $searchResult = @{
             Query = $Query
-            TotalCount = if ($response.'@odata.count') { $response.'@odata.count' } else { $response.value.Count }
+            TotalCount = $(if ($response.'@odata.count') { $response.'@odata.count' } else { $response.value.Count })
             Results = $response.value
-            SearchDuration = if ($response.'@search.facets') { "Available in response" } else { "Not available" }
+            SearchDuration = $(if ($response.'@search.facets') { "Available in response" } else { "Not available" })
             ExecutedAt = Get-Date -Format "yyyy-MM-ddTHH:mm:ss.fffZ"
             IndexName = $IndexName
         }
@@ -421,34 +421,34 @@ function Convert-ToAzureSearchDocument {
         $azureDoc = @{
             id = $Document.id
             parent_id = $Document.ParentEmailId
-            document_type = if ($Document.ChunkType) { $Document.ChunkType } else { "Email" }
+            document_type = $(if ($Document.ChunkType) { $Document.ChunkType } else { "Email" })
             title = $Document.EmailSubject
             content = $Document.Content
-            chunk_number = if ($Document.ChunkNumber) { [int]$Document.ChunkNumber } else { 1 }
-            total_chunks = if ($Document.TotalChunks) { [int]$Document.TotalChunks } else { 1 }
+            chunk_number = $(if ($Document.ChunkNumber) { [int]$Document.ChunkNumber } else { 1 })
+            total_chunks = $(if ($Document.TotalChunks) { [int]$Document.TotalChunks } else { 1 })
             sender_name = $Document.SenderName
             sender_email = $Document.Sender_Email
             sent_date = $Document.SentDate
             received_date = $Document.ReceivedDate
-            importance = if ($Document.Importance) { $Document.Importance } else { "Normal" }
-            has_attachments = if ($Document.HasAttachments) { [bool]$Document.HasAttachments } else { $false }
+            importance = $(if ($Document.Importance) { $Document.Importance } else { "Normal" })
+            has_attachments = $(if ($Document.HasAttachments) { [bool]$Document.HasAttachments } else { $false })
             processed_at = Get-Date -Format "yyyy-MM-ddTHH:mm:ss.fffZ"
             processor_version = "2.0"
-            content_quality_score = if ($Document.QualityScore) { [double]$Document.QualityScore / 100 } else { 0.5 }
-            word_count = if ($Document.WordCount) { [int]$Document.WordCount } else { 0 }
+            content_quality_score = $(if ($Document.QualityScore) { [double]$Document.QualityScore / 100 } else { 0.5 })
+            word_count = $(if ($Document.WordCount) { [int]$Document.WordCount } else { 0 })
             language_code = "en"
         }
         
         # Add arrays safely
-        $azureDoc.recipients_to = if ($Document.Recipients_To) { @($Document.Recipients_To) } else { @() }
-        $azureDoc.recipients_cc = if ($Document.Recipients_CC) { @($Document.Recipients_CC) } else { @() }
-        $azureDoc.attachment_types = if ($Document.AttachmentTypes) { @($Document.AttachmentTypes) } else { @() }
-        $azureDoc.people = if ($Document.People) { @($Document.People) } else { @() }
-        $azureDoc.organizations = if ($Document.Organizations) { @($Document.Organizations) } else { @() }
-        $azureDoc.locations = if ($Document.Locations) { @($Document.Locations) } else { @() }
-        $azureDoc.urls = if ($Document.URLs) { @($Document.URLs) } else { @() }
-        $azureDoc.phone_numbers = if ($Document.PhoneNumbers) { @($Document.PhoneNumbers) } else { @() }
-        $azureDoc.keywords = if ($Document.SearchKeywords) { @($Document.SearchKeywords) } else { @() }
+        $azureDoc.recipients_to = $(if ($Document.Recipients_To) { @($Document.Recipients_To) } else { @() })
+        $azureDoc.recipients_cc = $(if ($Document.Recipients_CC) { @($Document.Recipients_CC) } else { @() })
+        $azureDoc.attachment_types = $(if ($Document.AttachmentTypes) { @($Document.AttachmentTypes) } else { @() })
+        $azureDoc.people = $(if ($Document.People) { @($Document.People) } else { @() })
+        $azureDoc.organizations = $(if ($Document.Organizations) { @($Document.Organizations) } else { @() })
+        $azureDoc.locations = $(if ($Document.Locations) { @($Document.Locations) } else { @() })
+        $azureDoc.urls = $(if ($Document.URLs) { @($Document.URLs) } else { @() })
+        $azureDoc.phone_numbers = $(if ($Document.PhoneNumbers) { @($Document.PhoneNumbers) } else { @() })
+        $azureDoc.keywords = $(if ($Document.SearchKeywords) { @($Document.SearchKeywords) } else { @() })
         
         # Generate content vector embedding if requested
         if ($GenerateEmbeddings -and $OpenAIConfig -and $OpenAIConfig.ApiKey -and $Document.Content) {

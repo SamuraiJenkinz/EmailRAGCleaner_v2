@@ -204,7 +204,7 @@ function Extract-CoreEntities {
                     Format = $parsedDate.Format
                     IsValid = $parsedDate.IsValid
                     Position = $match.Index
-                    ConfidenceScore = if ($parsedDate.IsValid) { 0.90 } else { 0.60 }
+                    ConfidenceScore = $(if ($parsedDate.IsValid) { 0.90 } else { 0.60 })
                 }
             }
         }
@@ -343,7 +343,7 @@ function Extract-BusinessEntities {
         foreach ($pattern in $projectPatterns) {
             $projectMatches = [regex]::Matches($Content, $pattern)
             foreach ($match in $projectMatches) {
-                $project = if ($match.Groups.Count -gt 1) { $match.Groups[1].Value.Trim() } else { $match.Value.Trim() }
+                $project = $(if ($match.Groups.Count -gt 1) { $match.Groups[1].Value.Trim() } else { $match.Value.Trim() })
                 $businessEntities.Projects += @{
                     Value = $project
                     Position = $match.Index
@@ -759,7 +759,7 @@ function Extract-ContextAwareEntities {
         
         $contextEntities.Sentiment += @{
             Score = [Math]::Round($sentimentScore, 2)
-            Classification = if ($sentimentScore -gt 0.2) { "Positive" } elseif ($sentimentScore -lt -0.2) { "Negative" } else { "Neutral" }
+            Classification = $(if ($sentimentScore -gt 0.2) { "Positive" } elseif ($sentimentScore -lt -0.2) { "Negative" } else { "Neutral" })
             PositiveWords = $positiveCount
             NegativeWords = $negativeCount
             ConfidenceScore = [Math]::Min(0.80, [Math]::Abs($sentimentScore))
@@ -891,7 +891,7 @@ function Calculate-EntitySummary {
         TotalEntities = $totalEntities
         HighConfidenceEntities = $highConfidenceEntities
         Categories = $EntityResults.Entities.Keys.Count
-        ConfidenceRatio = if ($totalEntities -gt 0) { [Math]::Round($highConfidenceEntities / $totalEntities, 2) } else { 0 }
+        ConfidenceRatio = $(if ($totalEntities -gt 0) { [Math]::Round($highConfidenceEntities / $totalEntities, 2) } else { 0 })
     }
 }
 
@@ -899,20 +899,95 @@ function Calculate-EntitySummary {
 function Test-PrivateIP { param($IP) return $IP.StartsWith('10.') -or $IP.StartsWith('192.168.') -or $IP.StartsWith('172.') }
 function Extract-DomainFromURL { param($URL) try { return ([System.Uri]$URL).Host } catch { return "" } }
 function Extract-ProtocolFromURL { param($URL) try { return ([System.Uri]$URL).Scheme } catch { return "" } }
-function Extract-Currency { param($AmountString) if ($AmountString -match '\$') { return "USD" } else { return "Unknown" } }
-function Extract-NumericValue { param($AmountString) return [regex]::Replace($AmountString, '[^\d.]', '') }
-function Get-SurroundingContext { param($Content, $Position, $Length) $start = [Math]::Max(0, $Position - $Length/2); return $Content.Substring($start, [Math]::Min($Length, $Content.Length - $start)) }
-function Get-PositionLevel { param($Position) if ($Position -match '(?i)(CEO|CTO|VP|Director)') { return "Executive" } elseif ($Position -match '(?i)(Manager|Lead)') { return "Management" } else { return "Individual Contributor" } }
-function Get-ActionPriority { param($ActionText) if ($ActionText -match '(?i)(urgent|asap|critical)') { return "High" } else { return "Medium" } }
-function Get-DeadlineUrgency { param($DeadlineText) if ($DeadlineText -match '(?i)(today|tomorrow|asap|urgent)') { return "High" } else { return "Medium" } }
-function Get-DocumentType { param($DocumentText) if ($DocumentText -match '\.pdf$') { return "PDF" } elseif ($DocumentText -match '\.(doc|docx)$') { return "Word" } else { return "Other" } }
-function Test-CommonWord { param($Word) $commonWords = @('The New', 'For You', 'To Do', 'On The'); return $Word -in $commonWords }
-function Get-LocationType { param($Location) if ($Location -match '\d{5}') { return "ZIP Code" } elseif ($Location -match ',') { return "City, State/Country" } else { return "General" } }
+function Extract-Currency { 
+    param($AmountString) 
+    if ($AmountString -match '\$') { 
+        return "USD" 
+    } else { 
+        return "Unknown" 
+    } 
+}
+function Extract-NumericValue { 
+    param($AmountString) 
+    return [regex]::Replace($AmountString, '[^\d.]', '') 
+}
+function Get-SurroundingContext { 
+    param($Content, $Position, $Length) 
+    $start = [Math]::Max(0, $Position - $Length/2) 
+    return $Content.Substring($start, [Math]::Min($Length, $Content.Length - $start)) 
+}
+function Get-PositionLevel { 
+    param($Position) 
+    if ($Position -match '(?i)(CEO|CTO|VP|Director)') { 
+        return "Executive" 
+    } elseif ($Position -match '(?i)(Manager|Lead)') { 
+        return "Management" 
+    } else { 
+        return "Individual Contributor" 
+    } 
+}
+function Get-ActionPriority { 
+    param($ActionText) 
+    if ($ActionText -match '(?i)(urgent|asap|critical)') { 
+        return "High" 
+    } else { 
+        return "Medium" 
+    } 
+}
+function Get-DeadlineUrgency { 
+    param($DeadlineText) 
+    if ($DeadlineText -match '(?i)(today|tomorrow|asap|urgent)') { 
+        return "High" 
+    } else { 
+        return "Medium" 
+    } 
+}
+function Get-DocumentType { 
+    param($DocumentText) 
+    if ($DocumentText -match '\.pdf$') { 
+        return "PDF" 
+    } elseif ($DocumentText -match '\.(doc|docx)$') { 
+        return "Word" 
+    } else { 
+        return "Other" 
+    } 
+}
+function Test-CommonWord { 
+    param($Word) 
+    $commonWords = @('The New', 'For You', 'To Do', 'On The') 
+    return $Word -in $commonWords 
+}
+function Get-LocationType { 
+    param($Location) 
+    if ($Location -match '\d{5}') { 
+        return "ZIP Code" 
+    } elseif ($Location -match ',') { 
+        return "City, State/Country" 
+    } else { 
+        return "General" 
+    } 
+}
 function Get-TechnologyCategory { param($Technology) if ($Technology -match '(?i)(Azure|AWS|GCP)') { return "Cloud" } else { return "General" } }
 function Get-LanguageType { param($Language) if ($Language -match '(?i)(HTML|CSS|XML)') { return "Markup" } else { return "Programming" } }
 function Get-ProtocolCategory { param($Protocol) if ($Protocol -match '(?i)(HTTP|FTP|SSH)') { return "Network" } else { return "General" } }
-function Get-FileCategory { param($Extension) if ($Extension -match '(?i)\.(exe|dll|msi)') { return "Executable" } else { return "Document" } }
-function Get-SystemEnvironment { param($SystemName) if ($SystemName -match '(?i)(prod|production)') { return "Production" } elseif ($SystemName -match '(?i)(dev|test)') { return "Development" } else { return "Unknown" } }
+function Get-FileCategory { 
+    param($Extension) 
+    if ($Extension -match '(?i)\.(exe|dll|msi)') { 
+        return "Executable" 
+    } else { 
+        return "Document" 
+    } 
+}
+function Get-SystemEnvironment { 
+    param($SystemName) 
+    if ($SystemName -match '(?i)(prod|production)') { 
+        return "Production" 
+    } elseif ($SystemName -match '(?i)(dev|test)') { 
+        return "Development" 
+    } else { 
+        return "Unknown" 
+    } 
+}
 
 function Filter-EntitiesByConfidence {
     [CmdletBinding()]

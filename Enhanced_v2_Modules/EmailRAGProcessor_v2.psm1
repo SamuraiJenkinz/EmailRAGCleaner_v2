@@ -52,14 +52,14 @@ function Initialize-RAGPipeline {
             AzureSearch = $AzureSearchConfig
             IndexName = $IndexName
             Processing = @{
-                ChunkSize = if ($ProcessingConfig.ChunkSize) { $ProcessingConfig.ChunkSize } else { 384 }
-                MinChunkSize = if ($ProcessingConfig.MinChunkSize) { $ProcessingConfig.MinChunkSize } else { 128 }
-                MaxChunkSize = if ($ProcessingConfig.MaxChunkSize) { $ProcessingConfig.MaxChunkSize } else { 512 }
-                OverlapTokens = if ($ProcessingConfig.OverlapTokens) { $ProcessingConfig.OverlapTokens } else { 32 }
-                ExtractEntities = if ($ProcessingConfig.ExtractEntities -ne $null) { $ProcessingConfig.ExtractEntities } else { $true }
-                OptimizeForRAG = if ($ProcessingConfig.OptimizeForRAG -ne $null) { $ProcessingConfig.OptimizeForRAG } else { $true }
-                GenerateEmbeddings = if ($ProcessingConfig.GenerateEmbeddings -ne $null) { $ProcessingConfig.GenerateEmbeddings } else { $true }
-                BatchSize = if ($ProcessingConfig.BatchSize) { $ProcessingConfig.BatchSize } else { 50 }
+                ChunkSize = $(if ($ProcessingConfig.ChunkSize) { $ProcessingConfig.ChunkSize } else { 384 })
+                MinChunkSize = $(if ($ProcessingConfig.MinChunkSize) { $ProcessingConfig.MinChunkSize } else { 128 })
+                MaxChunkSize = $(if ($ProcessingConfig.MaxChunkSize) { $ProcessingConfig.MaxChunkSize } else { 512 })
+                OverlapTokens = $(if ($ProcessingConfig.OverlapTokens) { $ProcessingConfig.OverlapTokens } else { 32 })
+                ExtractEntities = $(if ($ProcessingConfig.ExtractEntities -ne $null) { $ProcessingConfig.ExtractEntities } else { $true })
+                OptimizeForRAG = $(if ($ProcessingConfig.OptimizeForRAG -ne $null) { $ProcessingConfig.OptimizeForRAG } else { $true })
+                GenerateEmbeddings = $(if ($ProcessingConfig.GenerateEmbeddings -ne $null) { $ProcessingConfig.GenerateEmbeddings } else { $true })
+                BatchSize = $(if ($ProcessingConfig.BatchSize) { $ProcessingConfig.BatchSize } else { 50 })
             }
             Statistics = @{
                 TotalProcessed = 0
@@ -528,9 +528,9 @@ function Test-RAGPipeline {
         return @{
             Status = "Success"
             ConnectionTest = $connectionTest
-            IndexStats = if ($indexStats) { $indexStats } else { $null }
-            SearchTest = if ($searchResult) { $searchResult.Results.Count } else { 0 }
-            HybridSearchTest = if ($hybridResult) { $hybridResult.Results.Count } else { 0 }
+            IndexStats = $(if ($indexStats) { $indexStats } else { $null })
+            SearchTest = $(if ($searchResult) { $searchResult.Results.Count } else { 0 })
+            HybridSearchTest = $(if ($hybridResult) { $hybridResult.Results.Count } else { 0 })
             TestedAt = Get-Date -Format "yyyy-MM-ddTHH:mm:ss.fffZ"
         }
         

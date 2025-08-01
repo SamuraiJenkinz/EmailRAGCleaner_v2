@@ -227,16 +227,18 @@ function Test-EmailProcessingPipeline {
         
         # Calculate results
         $testResult.EndTime = Get-Date
-        $testResult.AverageProcessingTime = if ($processingTimes.Count -gt 0) { 
-            [Math]::Round(($processingTimes | Measure-Object -Average).Average, 2) 
-        } else { 0 }
-        
-        $testResult.Status = if ($testResult.ProcessedFiles -eq $testResult.TotalFiles) {
-            "Success"
-        } elseif ($testResult.ProcessedFiles -gt 0) {
-            "Partial"
+        if ($processingTimes.Count -gt 0) {
+            $testResult.AverageProcessingTime = [Math]::Round(($processingTimes | Measure-Object -Average).Average, 2)
         } else {
-            "Failed"
+            $testResult.AverageProcessingTime = 0
+        }
+        
+        if ($testResult.ProcessedFiles -eq $testResult.TotalFiles) {
+            $testResult.Status = "Success"
+        } elseif ($testResult.ProcessedFiles -gt 0) {
+            $testResult.Status = "Partial"
+        } else {
+            $testResult.Status = "Failed"
         }
         
         Write-Host "   ✓ Processing complete: $($testResult.ProcessedFiles)/$($testResult.TotalFiles) files processed" -ForegroundColor Green
@@ -458,12 +460,12 @@ function Test-SearchAccuracy {
             $searchResult.Metrics.AverageResultCount = [Math]::Round(($resultCounts | Measure-Object -Average).Average, 1)
         }
         
-        $searchResult.Status = if ($searchResult.Metrics.SuccessfulQueries -eq $TestQueries.Count) {
-            "Success"
+        if ($searchResult.Metrics.SuccessfulQueries -eq $TestQueries.Count) {
+            $searchResult.Status = "Success"
         } elseif ($searchResult.Metrics.SuccessfulQueries -gt 0) {
-            "Partial"
+            $searchResult.Status = "Partial"
         } else {
-            "Failed"
+            $searchResult.Status = "Failed"
         }
         
         Write-Host "   ✓ Search testing: $($searchResult.Metrics.SuccessfulQueries)/$($TestQueries.Count) queries successful" -ForegroundColor Green
@@ -568,12 +570,12 @@ function Test-EntityExtraction {
             Select-Object -First 5 | 
             ForEach-Object { "$($_.Key): $($_.Value)" }
         
-        $entityResult.Status = if ($successfulExtractions -eq $TestEmails.Count) {
-            "Success"
+        if ($successfulExtractions -eq $TestEmails.Count) {
+            $entityResult.Status = "Success"
         } elseif ($successfulExtractions -gt 0) {
-            "Partial"
+            $entityResult.Status = "Partial"
         } else {
-            "Failed"
+            $entityResult.Status = "Failed"
         }
         
         Write-Host "   ✓ Entity extraction: $($entityResult.Metrics.ExtractionSuccessRate)% success rate" -ForegroundColor Green
@@ -927,17 +929,21 @@ function Calculate-TestSummary {
         }
     }
     
-    $overallStatus = if ($failedTests -eq 0) {
-        if ($passedTests -eq $totalTests) { "Passed" } else { "Warning" }
+    if ($failedTests -eq 0) {
+        if ($passedTests -eq $totalTests) {
+            $overallStatus = "Passed"
+        } else {
+            $overallStatus = "Warning"
+        }
     } else {
-        "Failed"
+        $overallStatus = "Failed"
     }
     
     return @{
         TotalTests = $totalTests
         TestsPassed = $passedTests
         TestsFailed = $failedTests
-        SuccessRate = if ($totalTests -gt 0) { [Math]::Round(($passedTests / $totalTests) * 100, 1) } else { 0 }
+        SuccessRate = $(if ($totalTests -gt 0) { [Math]::Round(($passedTests / $totalTests) * 100, 1) } else { 0 })
         OverallStatus = $overallStatus
     }
 }

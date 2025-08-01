@@ -75,7 +75,7 @@ function Find-EmailContent {
         # Filter by minimum score if specified
         $filteredResults = if ($MinimumScore -gt 0) {
             $searchResults.Results | Where-Object { 
-                $score = if ($_.HybridScore) { $_.HybridScore } elseif ($_.'@search.score') { $_.'@search.score' } else { 1.0 }
+                $score = $(if ($_.HybridScore) { $_.HybridScore } elseif ($_.'@search.score') { $_.'@search.score' } else { 1.0 })
                 $score -ge $MinimumScore
             }
         } else {
@@ -105,11 +105,11 @@ function Find-EmailContent {
             Write-Host "`nTop Results:" -ForegroundColor Yellow
             for ($i = 0; $i -lt [Math]::Min(5, $finalResults.Count); $i++) {
                 $result = $finalResults[$i]
-                $score = if ($result.SearchScore) { " (Score: $($result.SearchScore))" } else { "" }
+                $score = $(if ($result.SearchScore) { " (Score: $($result.SearchScore))" } else { "" })
                 Write-Host "  $($i + 1). $($result.Subject)$score" -ForegroundColor White
                 Write-Host "     From: $($result.SenderName) | Date: $($result.SentDate)" -ForegroundColor Gray
                 if ($result.ContentPreview) {
-                    $preview = if ($result.ContentPreview.Length -gt 100) { $result.ContentPreview.Substring(0, 100) + "..." } else { $result.ContentPreview }
+                    $preview = $(if ($result.ContentPreview.Length -gt 100) { $result.ContentPreview.Substring(0, 100) + "..." } else { $result.ContentPreview })
                     Write-Host "     Preview: $preview" -ForegroundColor Gray
                 }
                 Write-Host ""
@@ -178,9 +178,9 @@ function Search-EmailsBySender {
                 SenderName = $result.sender_name
                 SenderEmail = $result.sender_email
                 SentDate = $result.sent_date
-                ContentPreview = if ($result.content) { $result.content.Substring(0, [Math]::Min(200, $result.content.Length)) } else { "" }
-                ChunkInfo = if ($result.chunk_number) { "Chunk $($result.chunk_number) of $($result.total_chunks)" } else { "Full Email" }
-                SearchScore = if ($result.'@search.score') { [Math]::Round($result.'@search.score', 2) } else { 0 }
+                ContentPreview = $(if ($result.content) { $result.content.Substring(0, [Math]::Min(200, $result.content.Length)) } else { "" })
+                ChunkInfo = $(if ($result.chunk_number) { "Chunk $($result.chunk_number) of $($result.total_chunks)" } else { "Full Email" })
+                SearchScore = $(if ($result.'@search.score') { [Math]::Round($result.'@search.score', 2) } else { 0 })
             }
             $enhancedResults += $enhanced
         }
@@ -250,7 +250,7 @@ function Search-EmailsByDateRange {
                 Subject = $result.title
                 SenderName = $result.sender_name
                 SentDate = $result.sent_date
-                ContentPreview = if ($result.content) { $result.content.Substring(0, [Math]::Min(150, $result.content.Length)) } else { "" }
+                ContentPreview = $(if ($result.content) { $result.content.Substring(0, [Math]::Min(150, $result.content.Length)) } else { "" })
             }
         }
         
@@ -349,7 +349,7 @@ function Search-EmailsAdvanced {
             $filterParts += "importance eq '$Importance'"
         }
         
-        $filter = if ($filterParts.Count -gt 0) { $filterParts -join " and " } else { $null }
+        $filter = $(if ($filterParts.Count -gt 0) { $filterParts -join " and " } else { $null })
         
         # Build search query with keywords
         $searchQuery = if ($Keywords -and $Keywords.Count -gt 0) {
@@ -383,7 +383,7 @@ function Search-EmailsAdvanced {
             Criteria = @{
                 SenderName = $SenderName
                 Subject = $Subject
-                DateRange = if ($StartDate -or $EndDate) { "$($StartDate) to $($EndDate)" } else { $null }
+                DateRange = $(if ($StartDate -or $EndDate) { "$($StartDate) to $($EndDate)" } else { $null })
                 HasAttachments = $HasAttachments.IsPresent
                 Importance = $Importance
                 Keywords = $Keywords
@@ -403,8 +403,8 @@ function Search-EmailsAdvanced {
                     SentDate = $_.sent_date
                     HasAttachments = $_.has_attachments
                     Importance = $_.importance
-                    ContentPreview = if ($_.content) { $_.content.Substring(0, [Math]::Min(200, $_.content.Length)) } else { "" }
-                    SearchScore = if ($_.'@search.score') { [Math]::Round($_.'@search.score', 2) } else { 0 }
+                    ContentPreview = $(if ($_.content) { $_.content.Substring(0, [Math]::Min(200, $_.content.Length)) } else { "" })
+                    SearchScore = $(if ($_.'@search.score') { [Math]::Round($_.'@search.score', 2) } else { 0 })
                 }
             }
             SearchedAt = Get-Date -Format "yyyy-MM-ddTHH:mm:ss.fffZ"
@@ -681,9 +681,9 @@ function Enhance-SearchResult {
         SenderName = $Result.sender_name
         SenderEmail = $Result.sender_email
         SentDate = $Result.sent_date
-        ContentPreview = if ($Result.content) { $Result.content.Substring(0, [Math]::Min(300, $Result.content.Length)) } else { "" }
-        ChunkInfo = if ($Result.chunk_number) { "Chunk $($Result.chunk_number) of $($Result.total_chunks)" } else { "Full Email" }
-        SearchScore = if ($Result.HybridScore) { [Math]::Round($Result.HybridScore, 2) } elseif ($Result.'@search.score') { [Math]::Round($Result.'@search.score', 2) } else { 0 }
+        ContentPreview = $(if ($Result.content) { $Result.content.Substring(0, [Math]::Min(300, $Result.content.Length)) } else { "" })
+        ChunkInfo = $(if ($Result.chunk_number) { "Chunk $($Result.chunk_number) of $($Result.total_chunks)" } else { "Full Email" })
+        SearchScore = $(if ($Result.HybridScore) { [Math]::Round($Result.HybridScore, 2) } elseif ($Result.'@search.score') { [Math]::Round($Result.'@search.score', 2) } else { 0 })
         HasAttachments = $Result.has_attachments
         Importance = $Result.importance
         Keywords = $Result.keywords
@@ -700,7 +700,7 @@ function Group-ResultsByEmail {
     $grouped = @{}
     
     foreach ($result in $Results) {
-        $emailKey = if ($result.Subject) { $result.Subject } else { $result.Id }
+        $emailKey = $(if ($result.Subject) { $result.Subject } else { $result.Id })
         
         if (-not $grouped.ContainsKey($emailKey)) {
             $grouped[$emailKey] = @{
