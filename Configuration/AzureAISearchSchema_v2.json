@@ -1,0 +1,412 @@
+{
+  "name": "email-rag-index",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Edm.String",
+      "key": true,
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "parent_id",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": true
+    },
+    {
+      "name": "document_type",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "title",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": false,
+      "analyzer": "en.microsoft"
+    },
+    {
+      "name": "content",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false,
+      "analyzer": "en.microsoft"
+    },
+    {
+      "name": "content_vector",
+      "type": "Collection(Edm.Single)",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": false,
+      "sortable": false,
+      "facetable": false,
+      "vectorSearchDimensions": 1536,
+      "vectorSearchProfileName": "email-vector-profile"
+    },
+    {
+      "name": "chunk_number",
+      "type": "Edm.Int32",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": false
+    },
+    {
+      "name": "total_chunks",
+      "type": "Edm.Int32",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "sender_name",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": true
+    },
+    {
+      "name": "sender_email",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": true
+    },
+    {
+      "name": "recipients_to",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "recipients_cc",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "sent_date",
+      "type": "Edm.DateTimeOffset",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": true
+    },
+    {
+      "name": "received_date",
+      "type": "Edm.DateTimeOffset",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": true
+    },
+    {
+      "name": "importance",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "has_attachments",
+      "type": "Edm.Boolean",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "attachment_types",
+      "type": "Collection(Edm.String)",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "people",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "organizations",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "locations",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "urls",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "phone_numbers",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "message_id",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "conversation_topic",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "processed_at",
+      "type": "Edm.DateTimeOffset",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": false
+    },
+    {
+      "name": "processor_version",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "content_quality_score",
+      "type": "Edm.Double",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": false
+    },
+    {
+      "name": "word_count",
+      "type": "Edm.Int32",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": false
+    },
+    {
+      "name": "language_code",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "sentiment_score",
+      "type": "Edm.Double",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": false
+    },
+    {
+      "name": "keywords",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    }
+  ],
+  "scoringProfiles": [
+    {
+      "name": "email-relevance-profile",
+      "text": {
+        "weights": {
+          "title": 3.0,
+          "content": 2.0,
+          "sender_name": 1.5,
+          "people": 1.2,
+          "organizations": 1.2
+        }
+      },
+      "functions": [
+        {
+          "type": "magnitude",
+          "fieldName": "content_quality_score",
+          "boost": 2.0,
+          "parameters": {
+            "boostingRangeStart": 0.7,
+            "boostingRangeEnd": 1.0,
+            "constantBoostBeyondRange": false
+          }
+        },
+        {
+          "type": "freshness",
+          "fieldName": "sent_date",
+          "boost": 1.5,
+          "parameters": {
+            "boostingDuration": "P30D"
+          }
+        }
+      ]
+    }
+  ],
+  "corsOptions": {
+    "allowedOrigins": ["*"],
+    "maxAgeInSeconds": 300
+  },
+  "suggesters": [
+    {
+      "name": "email-suggester",
+      "searchMode": "analyzingInfixMatching",
+      "sourceFields": [
+        "title",
+        "sender_name",
+        "people",
+        "organizations",
+        "keywords"
+      ]
+    }
+  ],
+  "analyzers": [],
+  "charFilters": [],
+  "tokenizers": [],
+  "tokenFilters": [],
+  "defaultScoringProfile": "email-relevance-profile",
+  "encryptionKey": null,
+  "similarity": {
+    "@odata.type": "#Microsoft.Azure.Search.BM25Similarity",
+    "k1": 1.2,
+    "b": 0.75
+  },
+  "semantic": {
+    "defaultConfiguration": "email-semantic-config",
+    "configurations": [
+      {
+        "name": "email-semantic-config",
+        "prioritizedFields": {
+          "titleField": {
+            "fieldName": "title"
+          },
+          "prioritizedContentFields": [
+            {
+              "fieldName": "content"
+            }
+          ],
+          "prioritizedKeywordsFields": [
+            {
+              "fieldName": "keywords"
+            },
+            {
+              "fieldName": "people"
+            },
+            {
+              "fieldName": "organizations"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "vectorSearch": {
+    "profiles": [
+      {
+        "name": "email-vector-profile",
+        "algorithm": "email-hnsw-config",
+        "vectorizer": "email-openai-vectorizer"
+      }
+    ],
+    "algorithms": [
+      {
+        "name": "email-hnsw-config",
+        "kind": "hnsw",
+        "hnswParameters": {
+          "metric": "cosine",
+          "m": 4,
+          "efConstruction": 400,
+          "efSearch": 500
+        }
+      }
+    ],
+    "vectorizers": [
+      {
+        "name": "email-openai-vectorizer",
+        "kind": "azureOpenAI",
+        "azureOpenAIParameters": {
+          "resourceUri": "https://your-openai-service.openai.azure.com",
+          "deploymentId": "text-embedding-ada-002",
+          "apiKey": "your-api-key"
+        }
+      }
+    ]
+  }
+}

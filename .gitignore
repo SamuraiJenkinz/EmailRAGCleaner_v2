@@ -1,0 +1,37 @@
+# PowerShell and Windows
+*.log
+*.tmp
+*.temp
+Thumbs.db
+*.DS_Store
+
+# Installation directories (these are created by setup scripts)
+C:/EmailRAGCleaner/
+EmailRAGCleaner/
+
+# Sensitive configuration files
+*apikey*
+*secret*
+*password*
+config.json
+*.env
+
+# PowerShell execution artifacts
+*.ps1xml
+*.psd1.bak
+
+# Test outputs
+TestOutput/
+TestResults/
+
+# IDE files
+.vscode/
+*.code-workspace
+
+# Logs
+Logs/
+*.log
+
+# Temporary files
+temp/
+tmp/
