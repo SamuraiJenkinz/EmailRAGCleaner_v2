@@ -330,8 +330,8 @@ try {
     
     if ($moduleLoadErrors.Count -gt 0) {
         Write-GUILog "Some modules failed to load. GUI running in limited mode." "WARN"
-        foreach ($error in $moduleLoadErrors) {
-            Write-GUILog "  - $error" "WARN"
+        foreach ($moduleError in $moduleLoadErrors) {
+            Write-GUILog "  - $moduleError" "WARN"
         }
     }
 
