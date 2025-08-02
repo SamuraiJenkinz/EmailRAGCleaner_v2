@@ -114,17 +114,19 @@ try {
                     <StackPanel Margin="20">
                         <!-- File Selection -->
                         <GroupBox Header="📂 File Selection" Margin="0,0,0,20">
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Content="MSG Files Path:" Foreground="White"/>
-                                <TextBox Name="FilePathTextBox" Grid.Column="1" Margin="5,0" Background="#FF3F3F46" Foreground="White" Padding="5"/>
-                                <Button Name="BrowseButton" Grid.Column="2" Content="📁 Browse" Padding="10,5" Background="#FF007ACC" Foreground="White"/>
-                            </Grid>
-                            <Label Name="FileCountLabel" Content="No files selected" Foreground="#FFCCCCCC" Margin="10,5,10,0"/>
+                            <StackPanel>
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Content="MSG Files Path:" Foreground="White"/>
+                                    <TextBox Name="FilePathTextBox" Grid.Column="1" Margin="5,0" Background="#FF3F3F46" Foreground="White" Padding="5"/>
+                                    <Button Name="BrowseButton" Grid.Column="2" Content="📁 Browse" Padding="10,5" Background="#FF007ACC" Foreground="White"/>
+                                </Grid>
+                                <Label Name="FileCountLabel" Content="No files selected" Foreground="#FFCCCCCC" Margin="10,5,10,0"/>
+                            </StackPanel>
                         </GroupBox>
 
                         <!-- Processing Options -->
